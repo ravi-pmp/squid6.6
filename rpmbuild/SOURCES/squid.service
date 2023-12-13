@@ -1,0 +1,30 @@
+## Copyright (C) 1996-2023 The Squid Software Foundation and contributors
+##
+## Squid software is distributed under GPLv2+ license and includes
+## contributions from numerous individuals and organizations.
+## Please see the COPYING and CONTRIBUTORS files for details.
+##
+
+[Unit]
+Description=Squid Web Proxy Server
+Documentation=man:squid(8)
+After=network.target network-online.target nss-lookup.target
+
+[Service]
+#TimeoutStartSec=300
+User=dd-squid
+Group=dd-squid
+Type=simple
+PIDFile=/opt/squid/var/run/squid.pid
+#ExecStartPre=/opt/squid/sbin/squid  -z
+#ExecStartPre=/opt/squid/usr/libexec/squid/cache_swap.sh
+ExecStart=/opt/squid/sbin/squid -sYC -f /opt/squid/etc/squid.conf
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+#NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
+
+#ExecStart=/usr/sbin/squid --foreground $SQUID_OPTS -f ${SQUID_CONF}
+#ExecReload=/usr/bin/kill -HUP $MAINPID
